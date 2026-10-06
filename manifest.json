@@ -1,0 +1,35 @@
+{
+  "background_color": "#141110",
+  "description": "CHISME — la red social donde el chisme se convierte en comunidad. Publica, comenta, reacciona y conecta.",
+  "display": "standalone",
+  "icons": [
+    {
+      "sizes": "192x192",
+      "src": "icons/icon-192.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "icons/icon-512.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "192x192",
+      "src": "icons/icon-maskable-192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "icons/icon-maskable-512.png",
+      "type": "image/png"
+    }
+  ],
+  "name": "CHISME",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "short_name": "CHISME",
+  "start_url": ".",
+  "theme_color": "#141110"
+}

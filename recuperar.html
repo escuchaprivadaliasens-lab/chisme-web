@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CHISME — Crear contraseña</title>
+<!--
+  Página standalone de recuperación de contraseña.
+  Vive en web/recuperar.html para que `flutter build web` la copie a
+  build/web/ y se despliegue junto con la app en GitHub Pages.
+  Es el SITE_URL de Supabase Auth (ver docs/PHASE_1_REPORT.md).
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #141110; color: #FFF8F2; display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 24px; }
+  .card { width: 100%; max-width: 420px; }
+  h1 { text-align: center; font-size: 28px; letter-spacing: 2px; margin: 0 0 8px; font-weight: 900; }
+  h1 .accent { background: linear-gradient(135deg, #FF6B5B, #FFB347); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  p.sub { text-align: center; color: #B8AFA8; margin: 0 0 24px; font-size: 15px; }
+  label { display: block; font-size: 14px; color: #B8AFA8; margin: 16px 0 6px; }
+  input { width: 100%; padding: 14px 18px; font-size: 16px; border-radius: 16px; border: none; background: #2A2420; color: #FFF8F2; }
+  input:focus { outline: 1.5px solid #FF6B5B; }
+  button { width: 100%; margin-top: 24px; padding: 16px; font-size: 16px; font-weight: 800; border: none; border-radius: 18px; background: linear-gradient(135deg, #FF6B5B, #FFB347); color: #fff; cursor: pointer; box-shadow: 0 8px 18px rgba(255,107,91,.35); }
+  button:disabled { opacity: .5; cursor: default; }
+  .error { color: #FF7A6B; margin-top: 16px; font-size: 14px; text-align: center; }
+  .ok { color: #a5d6a7; margin-top: 16px; font-size: 15px; text-align: center; }
+  .hidden { display: none; }
+  a.volver { display: block; text-align: center; margin-top: 20px; color: #A78BFA; text-decoration: none; font-weight: 700; }
+  .hint { font-size: 13px; color: #7A6F66; margin-top: 12px; text-align: center; }
+  textarea { width: 100%; padding: 12px; font-size: 13px; border-radius: 16px; border: none; background: #2A2420; color: #FFF8F2; min-height: 70px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1><span class="accent">CHISME</span></h1>
+  <p class="sub">Crea tu nueva contraseña</p>
+
+  <div id="bloque-enlace" class="hidden">
+    <p class="sub">No encontramos un enlace válido de recuperación.</p>
+    <label for="enlace">Pega aquí el enlace completo del correo:</label>
+    <textarea id="enlace" placeholder="https://..."></textarea>
+    <button id="btn-enlace">Usar este enlace</button>
+  </div>
+
+  <div id="bloque-form" class="hidden">
+    <label for="pass1">Nueva contraseña (mínimo 6 caracteres)</label>
+    <input type="password" id="pass1" autocomplete="new-password">
+    <label for="pass2">Repite la contraseña</label>
+    <input type="password" id="pass2" autocomplete="new-password">
+    <button id="btn-guardar">Guardar contraseña</button>
+  </div>
+
+  <div id="msg-error" class="error hidden"></div>
+  <div id="msg-ok" class="ok hidden"></div>
+  <a class="volver hidden" id="volver" href="https://escuchaprivadaliasens-lab.github.io/chisme-web/">Volver a CHISME</a>
+  <p class="hint">Si el enlace del correo te dio error, cópialo manteniéndolo presionado y pégalo arriba.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  var SUPABASE_URL = 'https://uaopzmggiatorvkadvph.supabase.co';
+  // Publishable key: pública por diseño (también va en el bundle de la app).
+  var SUPABASE_KEY = 'sb_publishable_jiiGqRZVq1hFv-gCLClwNQ_PthIj6OL';
+  var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  var elError = document.getElementById('msg-error');
+  var elOk = document.getElementById('msg-ok');
+  var elForm = document.getElementById('bloque-form');
+  var elEnlace = document.getElementById('bloque-enlace');
+  var elVolver = document.getElementById('volver');
+
+  function error(t) { elError.textContent = t; elError.classList.remove('hidden'); elOk.classList.add('hidden'); }
+  function ok(t) { elOk.textContent = t; elOk.classList.remove('hidden'); elError.classList.add('hidden'); }
+
+  function paramsDe(url) {
+    try {
+      var u = new URL(url);
+      var q = new URLSearchParams(u.search);
+      var h = new URLSearchParams(u.hash.replace(/^#/, ''));
+      return {
+        code: q.get('code'),
+        access_token: h.get('access_token'),
+        refresh_token: h.get('refresh_token'),
+        type: h.get('type') || q.get('type')
+      };
+    } catch (e) { return {}; }
+  }
+
+  async function establecerSesion(p) {
+    if (p.code) {
+      var r1 = await supabase.auth.exchangeCodeForSession(p.code);
+      if (r1.error) throw r1.error;
+      return true;
+    }
+    if (p.access_token && p.refresh_token) {
+      var r2 = await supabase.auth.setSession({ access_token: p.access_token, refresh_token: p.refresh_token });
+      if (r2.error) throw r2.error;
+      return true;
+    }
+    return false;
+  }
+
+  async function iniciar() {
+    var p = paramsDe(window.location.href);
+    try {
+      var sesionOk = await establecerSesion(p);
+      var sesion = (await supabase.auth.getSession()).data.session;
+      if (sesionOk || sesion) {
+        elForm.classList.remove('hidden');
+        return;
+      }
+    } catch (e) {
+      error('El enlace no es válido o ya venció. Pide uno nuevo desde la app.');
+    }
+    elEnlace.classList.remove('hidden');
+  }
+
+  document.getElementById('btn-enlace').addEventListener('click', async function () {
+    var url = document.getElementById('enlace').value.trim();
+    if (!url) { error('Pega el enlace del correo.'); return; }
+    var p = paramsDe(url);
+    try {
+      var sesionOk = await establecerSesion(p);
+      if (sesionOk) {
+        elEnlace.classList.add('hidden');
+        elForm.classList.remove('hidden');
+        elError.classList.add('hidden');
+        history.replaceState(null, '', window.location.pathname);
+      } else {
+        error('Ese enlace no trae un código válido.');
+      }
+    } catch (e) {
+      error('El enlace no es válido o ya venció. Pide uno nuevo desde la app.');
+    }
+  });
+
+  document.getElementById('btn-guardar').addEventListener('click', async function () {
+    var p1 = document.getElementById('pass1').value;
+    var p2 = document.getElementById('pass2').value;
+    if (p1.length < 6) { error('La contraseña debe tener al menos 6 caracteres.'); return; }
+    if (p1 !== p2) { error('Las contraseñas no coinciden.'); return; }
+    var btn = document.getElementById('btn-guardar');
+    btn.disabled = true;
+    var r = await supabase.auth.updateUser({ password: p1 });
+    btn.disabled = false;
+    if (r.error) {
+      error('No se pudo guardar: ' + r.error.message);
+      return;
+    }
+    elForm.classList.add('hidden');
+    ok('¡Contraseña creada! Ya puedes entrar a CHISME.');
+    elVolver.classList.remove('hidden');
+  });
+
+  iniciar();
+})();
+</script>
+</body>
+</html>
