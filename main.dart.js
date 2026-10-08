@@ -61702,19 +61702,20 @@ break
 case 1:return A.j(q,r)}})
 return A.k($async$yi,r)},
 Lr(a,b){return this.aS0(a,b)},
-aS0(a,b){var s=0,r=A.l(t.di),q,p=this,o,n,m,l,k
+aS0(a,b){var s=0,r=A.l(t.di),q,p=this,o,n,m,l,k,j
 var $async$Lr=A.h(function(c,d){if(c===1)return A.i(d,r)
-for(;;)switch(s){case 0:if(a!=="original"&&a!=="authorized")throw A.n(A.bQ('La declaraci\xf3n debe ser "original" o "authorized".',null))
-o=B.c.al(b)
-if(o.length===0)throw A.n(A.bQ("Debes aceptar expresamente la responsabilidad.",null))
-n=$.a_().b
-n===$&&A.a()
-m=t.N
-l=A
+for(;;)switch(s){case 0:A:{if("original"===a){o="own"
+break A}if("authorized"===a){o="permitted"
+break A}o=A.ad(A.bQ('La declaraci\xf3n debe ser "original" o "authorized".',null))}n=B.c.al(b)
+if(n.length===0)throw A.n(A.bQ("Debes aceptar expresamente la responsabilidad.",null))
+m=$.a_().b
+m===$&&A.a()
+l=t.N
 k=A
+j=A
 s=3
-return A.d(n.ah("rights_declarations").de(0,A.a2(["declarant_id",p.gix(),"declaration",a,"details",o,"post_id",null],m,t.T)).aW("id, post_id, declaration, details, created_at").f1(0),$async$Lr)
-case 3:q=l.bjm(k.ka(d,m,t.z))
+return A.d(m.ah("rights_declarations").de(0,A.a2(["declarant_id",p.gix(),"declaration",o,"details",n,"post_id",null],l,t.T)).aW("id, post_id, declaration, details, created_at").f1(0),$async$Lr)
+case 3:q=k.bjm(j.ka(d,l,t.z))
 s=1
 break
 case 1:return A.j(q,r)}})
