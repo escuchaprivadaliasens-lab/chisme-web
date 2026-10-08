@@ -70617,37 +70617,38 @@ return A.d(p.ak("reports").dj(0,A.a2(["reporter_id",q.gtm(),"target_post_id",c,"
 case 2:return A.j(null,r)}})
 return A.k($async$yJ,r)},
 z3(a,b){return this.b0d(a,b)},
-b0d(a,b){var s=0,r=A.l(t.N),q,p=this,o,n,m,l,k,j,i,h,g,f,e,d
-var $async$z3=A.h(function(c,a0){if(c===1)return A.i(a0,r)
+b0d(a,b){var s=0,r=A.l(t.N),q,p=this,o,n,m,l,k,j,i,h,g,f,e,d,c
+var $async$z3=A.h(function(a0,a1){if(a0===1)return A.i(a1,r)
 for(;;)switch(s){case 0:s=3
 return A.d(a.nl(),$async$z3)
-case 3:i=a0
-h=a.b
-g=h.split(".")
-f=g.length>1?B.b.gar(g).toLowerCase():""
-e=B.b.m(B.wK,f)
-d=B.b.m(B.pc,f)
-if(!e&&!d)throw A.m(A.ag(u.B))
-o=i.length
-if(o>10485760)throw A.m(A.ag("El archivo supera los 10 MB."))
-n=p.gtm()
-m=Date.now()
-l=A.ch("[^a-zA-Z0-9._-]",!0,!1)
-k=n+"/"+m+"_"+A.dw(h,l,"_")
-if(e)j="video/mp4"
-else j="image/"+(f==="jpg"?"jpeg":f)
-h=$.a_()
-m=h.b
-m===$&&A.a()
-m=m.ay
-m===$&&A.a()
+case 3:h=a1
+g=a.b
+f=g.split(".")
+e=f.length>1?B.b.gar(f).toLowerCase():""
+d=B.b.m(B.wK,e)
+c=B.b.m(B.pc,e)
+if(!d&&!c)throw A.m(A.ag(u.B))
+o=d?104857600:10485760
+n=h.length
+if(n>o)throw A.m(A.ag("El archivo supera los "+(d?100:10)+" MB."))
+m=p.gtm()
+l=Date.now()
+k=A.ch("[^a-zA-Z0-9._-]",!0,!1)
+j=m+"/"+l+"_"+A.dw(g,k,"_")
+if(d)i="video/mp4"
+else i="image/"+(e==="jpg"?"jpeg":e)
+g=$.a_()
+l=g.b
+l===$&&A.a()
+l=l.ay
+l===$&&A.a()
 s=4
-return A.d(m.ak("post-media").pb(k,i,new A.oy(!1,j)),$async$z3)
+return A.d(l.ak("post-media").pb(j,h,new A.oy(!1,i)),$async$z3)
 case 4:s=5
-return A.d(h.b.ak("media_assets").dj(0,A.a2(["owner_id",n,"post_id",b,"bucket","post-media","path",k,"mime_type",j,"size_bytes",o],t.N,t.K)),$async$z3)
-case 5:h=h.b.ay
-h===$&&A.a()
-q=h.ak("post-media").vd(k)
+return A.d(g.b.ak("media_assets").dj(0,A.a2(["owner_id",m,"post_id",b,"bucket","post-media","path",j,"mime_type",i,"size_bytes",n],t.N,t.K)),$async$z3)
+case 5:g=g.b.ay
+g===$&&A.a()
+q=g.ak("post-media").vd(j)
 s=1
 break
 case 1:return A.j(q,r)}})
