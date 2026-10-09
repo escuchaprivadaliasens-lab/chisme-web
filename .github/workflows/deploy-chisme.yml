@@ -1,0 +1,35 @@
+name: Deploy chisme-web
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+      - name: Descargar ZIP del sitio
+        run: |
+          curl -sSL --fail -o /tmp/chisme-prod-deploy.zip "https://muse.ai/files/1412858848569404/1686678519723635/k8qzet8fuzm6q40tzdf8acvk/chisme-prod-deploy.zip"
+          ls -la /tmp/chisme-prod-deploy.zip
+          echo "=== Contenido del ZIP ==="
+          unzip -l /tmp/chisme-prod-deploy.zip
+      - name: Extraer, validar y publicar
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          unzip -o /tmp/chisme-prod-deploy.zip -d .
+          echo "=== Raiz tras extraer ==="
+          ls -la
+          test -f index.html || { echo "FALTA index.html en la raiz"; exit 1; }
+          test -f main.dart.js || { echo "FALTA main.dart.js en la raiz"; exit 1; }
+          git config user.name "escuchaprivadaliasens-lab"
+          git config user.email "escuchaprivadaliasens@gmail.com"
+          git rm -q .github/workflows/deploy-chisme.yml || echo "workflow ya ausente"
+          git add -A
+          echo "=== Cambios ==="
+          git status --short | head -80
+          git commit -m "Deploy: fix pantalla en blanco + auditoria compras"
+          git push origin HEAD:main
+          echo "=== Nuevo commit ==="
+          git rev-parse HEAD
