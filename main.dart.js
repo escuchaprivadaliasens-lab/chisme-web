@@ -10396,16 +10396,16 @@ if(t.P.b(n)){m=n
 l=J.a9(m)
 k=A.ct(l.h(m,"version"))
 k=k==null?null:B.d.bk(k)
-if(k==null)k=1
+if(k==null)k=3
 j=A.ct(l.h(m,"creator_bps"))
 j=j==null?null:B.d.bk(j)
-if(j==null)j=500
+if(j==null)j=1000
 i=A.ct(l.h(m,"chisme_bps"))
 i=i==null?null:B.d.bk(i)
-if(i==null)i=9500
+if(i==null)i=8000
 h=A.ct(l.h(m,"reseller_bps"))
 h=h==null?null:B.d.bk(h)
-if(h==null)h=0
+if(h==null)h=1000
 m=A.T(l.h(m,"notes"))
 q=new A.nT(k,j,i,h,m)
 s=1
@@ -10418,7 +10418,7 @@ s=6
 break
 case 3:s=2
 break
-case 6:q=new A.nT(1,500,9500,0,null)
+case 6:q=new A.nT(3,1000,8000,1000,null)
 s=1
 break
 case 1:return A.k(q,r)
@@ -57843,7 +57843,7 @@ $0(){return this.a.w=!1},
 $S:0}
 A.b5a.prototype={
 $2(a,b){var s,r,q,p,o=null,n=b.b
-if(n==null)n=new A.nT(1,500,9500,0,o)
+if(n==null)n=new A.nT(3,1000,8000,1000,o)
 s=t.p
 r=A.b([A.o("Regla activa: v"+n.a,o,o,o,o,B.a6,o,o,o),B.al,A.o(n.gQ6(),o,o,o,o,A.n(a).ok.Q,o,o,o)],s)
 q=n.e
@@ -63585,7 +63585,7 @@ return new A.dZ(j,n,n,A.ac(n,A.a6(A.b([p,B.bq,A.o(o,n,n,n,n,A.n(m).ok.Q,n,n,n)],
 $S:21}
 A.vh.prototype={
 P(){var s=$.a2(),r=A.b([],t.Vl)
-return new A.Od(new A.hZ(new A.bj()),new A.w8(),new A.bs(B.S,s),new A.bs(B.S,s),r,B.pa,new A.nT(1,500,9500,0,null),new A.bs(B.S,s),new A.bs(B.S,s))}}
+return new A.Od(new A.hZ(new A.bj()),new A.w8(),new A.bs(B.S,s),new A.bs(B.S,s),r,B.pa,new A.nT(3,1000,8000,1000,null),new A.bs(B.S,s),new A.bs(B.S,s))}}
 A.Od.prototype={
 U(){this.a7()
 this.B0()},
@@ -65211,7 +65211,7 @@ A.P3.prototype={
 v(a){var s=null,r=this.c,q=r==="not_configured",p=B.cN.aM(0.12),o=A.aa(14),n=A.by(B.cN.aM(0.4),1),m=A.o(q?"Pagos no disponibles temporalmente":"No se pudo completar la operaci\xf3n",s,s,s,s,B.a6,s,s,s),l=t.p
 return A.ac(s,A.ap(A.b([B.Vt,B.bR,A.av(A.a6(A.b([m,B.al,A.o(q?"El servicio de pagos no est\xe1 configurado en este momento. Int\xe9ntalo m\xe1s tarde.":r,s,s,s,s,B.hH,s,s,s),B.w,A.aG1(B.Ws,B.ez,this.d)],l),B.r,B.e,B.f,0,B.l),1)],l),B.r,B.e,B.f,0,s),B.k,s,s,new A.ad(p,s,n,o,s,s,B.p),s,s,s,B.aq,s,s,s)}}
 A.xE.prototype={
-P(){return new A.Ry(new A.hZ(new A.bj()),A.b([],t.PG),new A.nT(1,500,9500,0,null))}}
+P(){return new A.Ry(new A.hZ(new A.bj()),A.b([],t.PG),new A.nT(3,1000,8000,1000,null))}}
 A.Ry.prototype={
 U(){this.a7()
 this.BX()},
